@@ -12,13 +12,20 @@ get '/' do
 end
 
 get '/reset' do
-   # Reset the messages
+  Message.all.each do |mess|
+    mess.destroy
+  end
+  redirect '/'
   "Messages reset!"
 end
 
 post '/' do
   # TODO: Read the message contents, save to the database
-
+  puts "From: #{params[:sender]}"
+  puts "To: #{params[:receiver]}"
+  puts "Message: #{params[:content]}"
+  Message.create([{:sender => params[:sender], :receiver => params[:receiver], :content => params[:content]}])
+  erb :messages
 end
 
 class Message < ActiveRecord::Base
